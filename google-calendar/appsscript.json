@@ -1,0 +1,45 @@
+{
+    "addOns": {
+        "calendar": {
+            "conferenceSolution": [
+                {
+                    "id": 1,
+                    "name": "MyMeet",
+                    "logoUrl": "<use your logo from Workspace Marketplace SDK - Store Listing - Graphic Assets>",
+                    "onCreateFunction": "createMyMeetConference"
+                }
+            ],
+            "currentEventAccess": "READ_WRITE"
+        },
+        "common": {
+            "homepageTrigger": {
+                "enabled": false
+            },
+            "logoUrl": "<use your logo from Workspace Marketplace SDK - Store Listing - Graphic Assets>",
+            "name": "MyMeet for Google Calendar"
+        }
+    },
+    "timeZone": "Europe/Moscow",
+    "dependencies": {
+        "enabledAdvancedServices": [
+            {
+                "userSymbol": "Calendar",
+                "serviceId": "calendar",
+                "version": "v3"
+            }
+        ]
+    },
+    "webapp": {
+        "access": "ANYONE",
+        "executeAs": "USER_ACCESSING"
+    },
+    "exceptionLogging": "STACKDRIVER",
+    "oauthScopes": [
+        "https://www.googleapis.com/auth/calendar.addons.execute",
+        "https://www.googleapis.com/auth/calendar.events.readonly",
+        "https://www.googleapis.com/auth/calendar.addons.current.event.read",
+        "https://www.googleapis.com/auth/calendar.addons.current.event.write",
+        "https://www.googleapis.com/auth/script.external_request",
+        "https://www.googleapis.com/auth/script.scriptapp"
+    ]
+}
