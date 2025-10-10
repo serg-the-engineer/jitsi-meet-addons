@@ -1,3 +1,5 @@
+var MEET_DOMAIN = PropertiesService.getScriptProperties().getProperty('MEET_DOMAIN');
+
 function createMyMeetConference(arg) {
     console.log("start");
     const eventData = arg.eventData;
@@ -8,7 +10,7 @@ function createMyMeetConference(arg) {
 }
 
 function createConferenceWithCustomName(eventData, roomName) {
-    const roomUrl = "https://meet.mydomain.com/" + roomName;
+    const roomUrl = "https://" + MEET_DOMAIN + "/" + roomName;
 
     var dataBuilder = ConferenceDataService.newConferenceDataBuilder();
 

@@ -39,7 +39,6 @@
         "https://www.googleapis.com/auth/calendar.events.readonly",
         "https://www.googleapis.com/auth/calendar.addons.current.event.read",
         "https://www.googleapis.com/auth/calendar.addons.current.event.write",
-        "https://www.googleapis.com/auth/script.external_request",
         "https://www.googleapis.com/auth/script.scriptapp"
     ]
 }
