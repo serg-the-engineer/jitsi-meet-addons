@@ -1,0 +1,17 @@
+{
+    "timeZone": "Europe/Moscow",
+    "runtimeVersion": "V8",
+    "dependencies": {
+        "enabledAdvancedServices": [
+            {
+                "userSymbol": "Calendar",
+                "serviceId": "calendar",
+                "version": "v3"
+            }
+        ]
+    },
+    "webapp": {
+        "access": "ANYONE",
+        "executeAs": "USER_ACCESSING"
+    }
+}
