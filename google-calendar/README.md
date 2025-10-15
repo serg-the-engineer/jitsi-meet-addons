@@ -6,6 +6,9 @@ By "creating a conference" we mean generating a valid meeting link that, when op
 
 The meeting name is generated randomly with simple template. Feel free to set any template, but generated. It's more simplier to change room name from another interface rather from calendar.
 
+![assets/calendar_create_room.png](../assets/calendar_create_room.png)
+![assets/calendar_view_room.png](../assets/calendar_view_room.png)
+
 ## Deployment
 
 ### Setup App Scripts
