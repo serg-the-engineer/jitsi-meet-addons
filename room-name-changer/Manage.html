@@ -3,13 +3,13 @@
 
 <head>
     <base target="_top">
-    <title>Conferences management</title>
+    <title>Conference Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         :root {
             --bs-primary: #dc3545;
-            /* Красный бренд */
+            /* Brand red */
             --bs-gray: #6c757d;
             --bs-body-bg: #ffffff;
             --bs-body-color: #000000;
@@ -34,12 +34,20 @@
             margin-top: 1rem;
             font-weight: bold;
         }
+
+        /* --- STYLE FOR THE RECURRING TEXT --- */
+        .recurring-text {
+            font-weight: 500;
+            /* Make the text slightly bolder */
+            margin-left: 0.5rem;
+            /* Add a small left margin */
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2 class="mb-4">Conferences management</h2>
+        <h2 class="mb-4">Conference Management</h2>
         <div id="eventsContainer" class="list-group mb-3">
         </div>
 
@@ -52,35 +60,39 @@
             google.script.run
                 .withSuccessHandler(renderEvents)
                 .withFailureHandler(function (error) {
-                    setStatus('Error: ' + error.message);
+                    setStatus('Error loading conferences: ' + error.message);
                     document.getElementById('eventsContainer').innerHTML = '';
                 })
-                .getUserRoboMeetEvents();
+                .getUserMeetEvents();
         }
 
         function renderEvents(events) {
             var container = document.getElementById('eventsContainer');
             if (!events || events.length === 0) {
-                container.innerHTML = '<div class="alert alert-secondary text-center">No available conferences found.</div>';
+                container.innerHTML = '<div class="alert alert-secondary text-center">No created conferences found.</div>';
                 clearStatus();
                 return;
             }
             container.innerHTML = '';
             events.forEach(function (e) {
                 var disabledAttr = e.canEdit ? '' : 'disabled';
-                var canEditText = e.canEdit ? '' : '<small class="text-muted">(Only creator can edit)</small>';
+
+                // Create the indicator text based on the isRecurring flag
+                var recurringIndicator = e.isRecurring
+                    ? '<span class="recurring-text">[Recurring]</span>'
+                    : '';
 
                 var item = document.createElement('div');
                 item.className = 'list-group-item d-flex flex-column flex-md-row justify-content-between align-items-center';
                 item.innerHTML =
                     '<div class="mb-2 mb-md-0">' +
                     '<strong>' + escapeHtml(e.title) + '</strong><br>' +
-                    '<small class="text-muted">Date: ' + new Date(e.start).toLocaleString() + '</small>' +
+                    // Add the indicator text next to the date
+                    '<small class="text-muted">Date: ' + new Date(e.start).toLocaleString() + recurringIndicator + '</small>' +
                     '</div>' +
                     '<div class="d-flex align-items-center gap-2">' +
                     '<input type="text" class="form-control form-control-sm" value="' + escapeHtml(e.roomName) + '" id="room-' + encodeURIComponent(e.eventId) + '" ' + disabledAttr + ' style="max-width: 180px;">' +
                     '<button class="btn btn-sm btn-danger" ' + disabledAttr + ' onclick="saveRoomName(\'' + e.eventId + '\')">Save</button>' +
-                    canEditText +
                     '</div>';
 
                 container.appendChild(item);
@@ -94,14 +106,15 @@
             var newName = input.value.trim();
 
             if (newName === '') {
-                alert('Room name required');
+                alert('Room name cannot be empty');
                 return;
             }
 
             setStatus('Saving...');
             google.script.run.withSuccessHandler(function (res) {
                 if (res.success) {
-                    setStatus('Room name updated!');
+                    // Use the message from the server, which is now in English
+                    setStatus(res.message || 'Room name updated');
                 } else {
                     setStatus('Error: ' + res.message);
                 }
@@ -119,7 +132,7 @@
             }, 4000);
         }
 
-        // Защита от XSS
+        // XSS Protection
         function escapeHtml(text) {
             var map = {
                 '&': '&amp;',
